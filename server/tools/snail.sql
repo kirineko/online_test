@@ -1,34 +1,26 @@
-
--- show create table books 
-
-DROP TABLE IF EXISTS `books`;
-
- CREATE TABLE `books` (
+CREATE TABLE `books` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `isbn` varchar(20) NOT NULL,
-  `openid` varchar(100) NOT NULL,
-  `title` varchar(100) NOT NULL,
-  `image` varchar(100) NOT NULL,
-  `alt` varchar(100) NOT NULL,
-  `publisher` varchar(100) NOT NULL,
-  `summary` varchar(1000) NOT NULL,
-  `price` varchar(100) DEFAULT NULL,
+  `isbn` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `openid` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `image` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `alt` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `publisher` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `summary` varchar(1500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `price` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `rate` float DEFAULT NULL,
-  `tags` varchar(100) DEFAULT NULL,
-  `author` varchar(100) DEFAULT NULL,
+  `tags` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `author` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `count` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
-
-DROP TABLE IF EXISTS `comments`;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `comments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `openid` varchar(100) NOT NULL,
-  `bookid` varchar(100) NOT NULL,
-  `comment` varchar(200) NOT NULL,
-  `phone` varchar(20) DEFAULT NULL,
-  `location` varchar(20) DEFAULT NULL,
+  `openid` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `bookid` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `comment` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `phone` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `location` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
-
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
