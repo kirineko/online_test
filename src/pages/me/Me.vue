@@ -5,23 +5,23 @@
             <p>{{userinfo.nickName}}</p>
         </div>
 
-        <YearProgress></YearProgress>
-        <button v-if="userinfo.openId" @click="scanBook" class="btn">添加图书</button>
-        <button v-if="!userinfo.openId" open-type="getUserInfo" class="btn">授权登录</button>
+        <button v-if="!userinfo.openId" open-type="getUserInfo" class="weui-btn" type="warn">授权登录</button>
+        <div v-if="userinfo.openId">
+          <button class="weui-btn" type="primary" @click="gotoExam" >开始考试</button>
+          <button class="weui-btn" type="primary" >查看成绩</button>
+          <div class="bottom">
+            <button class="weui-btn" type="primary" @click="logout">退出登录</button>
+          </div>
+        </div>
     </div>
 </template>
 
 <script>
-import YearProgress from '@/components/YearProgress'
 import qcloud from 'wafer2-client-sdk'
-import {showSuccess, post, showModal} from '@/util'
+import {showSuccess} from '@/util'
 import config from '@/config'
 
 export default {
-
-  components: {
-    YearProgress
-  },
 
   data () {
     return {
@@ -40,25 +40,10 @@ export default {
   },
 
   methods: {
-
-    async addBook (isbn) {
-      const res = await post('/weapp/addbook', {
-        isbn,
-        openId: this.userinfo.openId
-      })
-      showModal('添加成功', `${res.title}添加成功`)
-    },
-
-    scanBook () {
-      wx.scanCode({
-        success: (res) => {
-          if (res.result) {
-            this.addBook(res.result)
-          }
-        }
-      })
-    },
     login () {
+      if (this.userinfo.openId) {
+        return
+      }
       qcloud.setLoginUrl(config.loginUrl)
 
       qcloud.login({
@@ -70,6 +55,19 @@ export default {
         fail: err => {
           console.error(err)
         }
+      })
+    },
+    logout () {
+      wx.removeStorageSync('userinfo')
+      this.userinfo = {
+        avatarUrl: '../../static/img/unlogin.png',
+        nickName: '点击登录'
+      }
+    },
+    gotoExam () {
+      const url = '/pages/exam/main'
+      wx.switchTab({
+        url
       })
     }
   }
@@ -89,6 +87,10 @@ export default {
             border-radius: 50%;
         }
     }
+    .bottom {
+      position: fixed;
+      bottom: 30rpx;
+      width: 92.5%;
+    }
 }
-
 </style>

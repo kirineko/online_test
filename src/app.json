@@ -1,7 +1,7 @@
 {
   "pages": [
-      "pages/book/main",
       "pages/me/main",
+      "pages/exam/main",
       "pages/comments/main",
       "pages/detail/main"
     ],
@@ -12,27 +12,27 @@
   },
   "window": {
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#EA5149",
-    "navigationBarTitleText": "蜗牛图书",
+    "navigationBarBackgroundColor": "#000",
+    "navigationBarTitleText": "在线测试",
     "navigationBarTextStyle": "white"
   },
   "tabBar": {
     "selectedColor": "#EA5149",
     "list": [{
-        "pagePath": "pages/book/main",
-        "text": "图书",
+        "pagePath": "pages/exam/main",
+        "text": "测试",
         "iconPath": "static/img/book.png",
         "selectedIconPath": "static/img/book-active.png"
       },
       {
         "pagePath": "pages/comments/main",
-        "text": "评论",
+        "text": "成绩",
         "iconPath": "static/img/todo.png",
         "selectedIconPath": "static/img/todo-active.png"
       },
       {
         "pagePath": "pages/me/main",
-        "text" : "我",
+        "text" : "个人中心",
         "iconPath": "static/img/me.png",
         "selectedIconPath": "static/img/me-active.png"
       }

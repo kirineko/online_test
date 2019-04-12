@@ -11,7 +11,7 @@ export default {
 .text-footer {
   text-align: center;
   font-size: 12px;
-  margin-bottom: 3px; 
+  margin-bottom: 3px;
 }
 
 .text-primary {
