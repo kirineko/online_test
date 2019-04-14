@@ -100,5 +100,22 @@ class CI_Controller {
 						json_encode($data, JSON_UNESCAPED_UNICODE)
 					);
 	}
+	
+	public function json_success ($succ_data) {
+		$data = [
+			'code' => 0,
+			'data' => $succ_data
+		];
+		return $this->json($data);
+	}
 
+	public function json_error ($code, $msg) {
+		$data = [
+			'code' => $code,
+			'data' => [
+				'msg' => $msg
+			]
+		];
+		return $this->json($data);
+	}
 }
