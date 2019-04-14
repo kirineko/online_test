@@ -70,15 +70,29 @@ export default {
 </script>
 
 <style lang="scss">
+
+.title {
+  font-size: 50rpx;
+  text-align: center;
+  font-family: Verdana, Geneva, Tahoma, sans-serif
+}
+
 .weui-cells__title {
   font-size: 40rpx;
+  margin-top: 1em;
+  margin-bottom: 1.2em;
+}
+
+.weui-cell {
+  padding: 30rpx 30rpx;
 }
 
 .group-btn {
   display: block;
-  margin: 40rpx 20rpx;
+  margin: 70rpx 20rpx;
   .mini-btn {
-    width: 40% 
+    width: 40%;
+    font-size: 16px;
   }
   .left {
     float: left;
