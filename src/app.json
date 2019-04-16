@@ -2,7 +2,7 @@
   "pages": [
       "pages/me/main",
       "pages/exam/main",
-      "pages/comments/main",
+      "pages/score/main",
       "pages/detail/main"
     ],
   "permission": {
@@ -25,7 +25,7 @@
         "selectedIconPath": "static/img/book-active.png"
       },
       {
-        "pagePath": "pages/comments/main",
+        "pagePath": "pages/score/main",
         "text": "成绩",
         "iconPath": "static/img/todo.png",
         "selectedIconPath": "static/img/todo-active.png"
