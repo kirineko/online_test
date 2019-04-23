@@ -3,7 +3,7 @@
       "pages/me/main",
       "pages/exam/main",
       "pages/score/main",
-      "pages/detail/main"
+      "pages/list/main"
     ],
   "permission": {
     "scope.userLocation": {
@@ -25,8 +25,8 @@
         "selectedIconPath": "static/img/book-active.png"
       },
       {
-        "pagePath": "pages/score/main",
-        "text": "成绩",
+        "pagePath": "pages/list/main",
+        "text": "试题列表",
         "iconPath": "static/img/todo.png",
         "selectedIconPath": "static/img/todo-active.png"
       },

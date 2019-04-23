@@ -63,6 +63,9 @@ export default {
   },
 
   onShow () {
+    let query = this.$root.$mp.query
+    console.log(query)
+
     if (!this.userinfo.openId) {
       let userinfo = wx.getStorageSync('userinfo')
       if (userinfo) {

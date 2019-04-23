@@ -102,14 +102,14 @@ export default {
     async submit_answers () {
       this.saveAnswer()
       const answers = wx.getStorageSync('answers')
-      await post('/weapp/postanswer', {
+      const score = await post('/weapp/postanswer', {
         openid: this.userinfo.openId,
         gid: this.question.gid,
         gname: this.question.gname,
         answers: answers
       })
       const url = '/pages/score/main'
-      wx.switchTab({url})
+      this.$router.push({ path: url, query: score })
     }
   },
 
