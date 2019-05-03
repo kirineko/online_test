@@ -99,6 +99,18 @@ export default {
         this.init()
       }
     }
+  },
+
+  onShow () {
+    if (!this.userinfo.openId) {
+      let userinfo = wx.getStorageSync('userinfo')
+      if (userinfo) {
+        this.userinfo = userinfo
+        this.init()
+      }
+    } else {
+      this.init()
+    }
   }
 }
 </script>
