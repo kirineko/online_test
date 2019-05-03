@@ -1,32 +1,48 @@
 <template>
   <a :href="detailUrl">
-    <div class="book-card">
-      <div class="thumb" @click.stop="preview">
-        <img :src="book.image"  class="img" mode="aspectFit">
+    <div class="exam-card">
+      <div class="thumb">
+        <img :src="imageurl"  class="img" mode="aspectFit">
       </div>
       <div class="detail">
-        <div class="row text-primary">
-          <div class="right">
-            {{book.rate}} <Rate :value="book.rate"></Rate>
+        <div class="weui-cell">
+          <div class="weui-cell__bd">
+            试卷编号
           </div>
-          <div class="left">
-            {{book.title}}
-          </div>
-        </div>
-        <div class="row">
-          <div class="right text-primary">
-            浏览量:{{book.count}}
-          </div>
-          <div class="left">
-            {{book.author}}
+          <div class="weui-cell__ft">
+            {{exam.gid}}
           </div>
         </div>
-        <div class="row">
-          <div class="right">
-            {{book.user_info.nickName}}
+        <div class="weui-cell">
+          <div class="weui-cell__bd">
+            课程名称
           </div>
-          <div class="left">
-            {{book.publisher}}
+          <div class="weui-cell__ft">
+            {{exam.lname}}
+          </div>
+        </div>
+        <div class="weui-cell">
+          <div class="weui-cell__bd">
+            试卷名称
+          </div>
+          <div class="weui-cell__ft">
+            {{exam.gname}}
+          </div>
+        </div>
+        <div v-if="exam.score === undefined" class="weui-cell">
+          <div class="weui-cell__bd">
+            测试时间
+          </div>
+          <div class="weui-cell__ft">
+            {{starttime}}~{{endtime}}
+          </div>
+        </div>
+        <div v-if="exam.score !== undefined" class="weui-cell">
+          <div class="weui-cell__bd">
+            测试分数
+          </div>
+          <div class="weui-cell__ft">
+            {{exam.score}}
           </div>
         </div>
       </div>
@@ -35,41 +51,36 @@
 </template>
 
 <script>
-import Rate from '@/components/Rate'
-
 export default {
-  components: {
-    Rate
-  },
-  methods: {
-    preview () {
-      wx.previewImage({
-        current: this.book.image,
-        urls: [this.book.image]
-      })
-    }
-  },
   computed: {
     detailUrl () {
-      return '/pages/detail/main?id=' + this.book.id
+      return '/pages/exam/main?gid=' + this.exam.gid
+    },
+
+    starttime () {
+      return this.exam.start_time.substring(0, 10)
+    },
+
+    endtime () {
+      return this.exam.end_time.substring(0, 10)
     }
   },
-  props: ['book']
+  props: ['exam', 'imageurl']
 }
 </script>
 
 <style lang="scss" scoped>
-.book-card {
+.exam-card {
   padding: 5px;
   overflow: hidden;
   margin-top: 5px;
   margin-bottom: 5px;
   font-size: 14px;
   .thumb {
-    width: 90px;
-    height: 90px;
+    width: 180rpx;
+    height: 300rpx;
     float: left;
-    margin: 0 auto;
+    margin: auto auto;
     overflow: hidden;
     img {
       max-width: 100%;
@@ -78,16 +89,6 @@ export default {
   }
   .detail {
     margin-left: 100px;
-    .row {
-      line-height: 20px;
-      margin-bottom: 3px;
-    }
-    .right {
-      float: right;
-    }
-    .left {
-      margin-right: 80px;
-    }
   }
 }
 </style>

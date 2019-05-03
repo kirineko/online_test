@@ -1,59 +1,88 @@
 <template>
   <div>
-    <div class="container">
-      <CommentList v-if="userinfo.openId" :comments="comments" type="user"></CommentList>
-      <div v-if="userinfo.openId">
-        <div class="page-title">我的图书</div>
-        <Card
-          v-for="book in books"
-          :key="book.id"
-          :book="book">
-        </Card>
-        <div v-if="!books.length">暂时还没添加过图书，快去添加几本吧</div>
+    <div v-if="userinfo.openId" class="container">
+      <mp-cell-group title="试卷信息">
+        <mp-cell content="用户名称" :label="userinfo.nickName" isLink=false></mp-cell>
+        <mp-cell content="试卷名称" :label="gname" isLink=false></mp-cell>
+        <mp-cell content="交卷时间" :label="submit_time" isLink=false></mp-cell>
+        <mp-cell content="总分" :label="total" isLink=false></mp-cell>
+      </mp-cell-group>
+      <mp-cell-group title="答题信息">
+        <Answer number="题号" answer="你的答案" stdanswer="标准答案" isLink=flase></Answer>
+      </mp-cell-group>
+      <div v-for="ans in answer_info" :key="ans.num">
+        <Answer
+          :number="ans.num" 
+          :status="ans.right ? 'success' : 'cancel'" 
+          :answer="ans.user_answer" 
+          :stdanswer="ans.std_answer" 
+          @click="getQuestion(ans.num)">
+        </Answer>
+      </div>
+      <div class="submit">
+        <button class="submit-btn" type="primary" @click="back_list()">返回试题列表</button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import CommentList from '@/components/CommentList'
-import Card from '@/components/Card'
+import MpCell from 'mp-weui/packages/cell'
+import MpCellGroup from 'mp-weui/packages/cell-group'
+import Answer from '@/components/Answer'
 import { get } from '@/util'
 
 export default {
   data () {
     return {
-      comments: [],
-      books: [],
-      userinfo: {}
+      userinfo: {},
+      answer_info: [],
+      total: 0,
+      submit_time: '',
+      gname: '',
+      gid: 0
     }
   },
 
   components: {
-    CommentList,
-    Card
+    MpCell,
+    MpCellGroup,
+    Answer
   },
 
   methods: {
-    init () {
+    async init () {
       wx.showNavigationBarLoading()
-      this.getComments()
-      this.getBooks()
+      let query = this.$root.$mp.query
+      const gid = query.gid
+      const params = {
+        'gid': gid,
+        'openid': this.userinfo.openId
+      }
+      const result = await get('/weapp/getanswer', params)
+
+      this.gid = gid
+      this.gname = result.gname
+      this.submit_time = result.submit_time
+      this.total = result.total
+      this.answer_info = result.data
       wx.hideNavigationBarLoading()
     },
 
-    async getBooks () {
-      const books = await get('/weapp/booklist', {
-        openid: this.userinfo.openId
-      })
-      this.books = books.list
+    getQuestion (num) {
+      const url = '/pages/exam/main'
+      const params = {
+        gid: this.gid,
+        num: num
+      }
+      this.$router.push({ path: url, query: params })
     },
 
-    async getComments () {
-      const comments = await get('/weapp/commentlist', {
-        openid: this.userinfo.openId
+    back_list () {
+      const url = '/pages/list/main'
+      wx.switchTab({
+        url
       })
-      this.comments = comments.list
     }
   },
 
@@ -62,10 +91,7 @@ export default {
     wx.stopPullDownRefresh()
   },
 
-  onShow () {
-    let query = this.$root.$mp.query
-    console.log(query)
-
+  onLoad () {
     if (!this.userinfo.openId) {
       let userinfo = wx.getStorageSync('userinfo')
       if (userinfo) {
@@ -77,6 +103,12 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="scss">
+.submit {
+  margin-top: 40rpx;
+  .submit-btn {
+    width: 95%;
+    font-size: 16px;
+  }
+}
 </style>

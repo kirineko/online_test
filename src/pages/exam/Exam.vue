@@ -10,8 +10,11 @@
         <button class="mini-btn left" type="primary" @click="prepage()">上一题</button>
         <button class="mini-btn right" type="primary" @click="nextpage()">下一题</button>
       </div>
-      <div v-if="submit" class="submit">
+      <div v-if="submit && first" class="submit">
         <button class="submit-btn" type="primary" @click="submit_answers()">交卷</button>
+      </div>
+      <div v-if="!first" class="submit">
+        <button class="submit-btn" type="primary" @click="back_answers()">返回成绩列表</button>
       </div>
     </div>
 </template>
@@ -29,6 +32,7 @@ export default {
   data () {
     return {
       num: 1,
+      gid: 1,
       question: {
         title: '',
         options: []
@@ -36,14 +40,41 @@ export default {
       choiced: '',
       userinfo: {},
       answers: {},
-      submit: false
+      submit: false,
+      first: true
     }
   },
 
   methods: {
+    async init () {
+      let query = this.$root.$mp.query
+      this.num = parseInt(query.num) || 1
+      this.gid = query.gid
+      await this.getList()
+      const userinfo = wx.getStorageSync('userinfo')
+      if (userinfo) {
+        this.userinfo = userinfo
+      }
+      this.isfirst()
+      this.getAnswer()
+    },
+
+    async isfirst () {
+      const params = {
+        'openid': this.userinfo.openId,
+        'gid': this.gid
+      }
+      const answers = await get('/weapp/getuseranswer', params)
+      if (!answers) {
+        this.first = true
+      } else {
+        this.first = false
+      }
+    },
+
     async getList () {
       wx.showNavigationBarLoading()
-      const question = await get('/weapp/question', {'num': this.num})
+      const question = await get('/weapp/question', {'gid': this.gid, 'num': this.num})
       this.question = question
       const qvalues = ['A', 'B', 'C', 'D']
       const qlabels = ['result_a', 'result_b', 'result_c', 'result_d']
@@ -93,8 +124,15 @@ export default {
       let answers = Object.assign(this.answers, answer)
       wx.setStorageSync('answers', answers)
     },
-    getAnswer () {
-      const answers = wx.getStorageSync('answers')
+    async getAnswer () {
+      let answers = wx.getStorageSync('answers')
+      if (!answers) {
+        const params = {
+          'openid': this.userinfo.openId,
+          'gid': this.gid
+        }
+        answers = await get('/weapp/getuseranswer', params)
+      }
       this.answers = answers || {}
       this.choiced = answers[this.num] ? answers[this.num] : ''
     },
@@ -102,14 +140,27 @@ export default {
     async submit_answers () {
       this.saveAnswer()
       const answers = wx.getStorageSync('answers')
-      const score = await post('/weapp/postanswer', {
+      await post('/weapp/postanswer', {
         openid: this.userinfo.openId,
         gid: this.question.gid,
         gname: this.question.gname,
         answers: answers
       })
+      wx.removeStorageSync('answers')
       const url = '/pages/score/main'
-      this.$router.push({ path: url, query: score })
+      const params = {
+        gid: this.question.gid
+      }
+      this.$router.push({ path: url, query: params })
+    },
+
+    async back_answers () {
+      wx.removeStorageSync('answers')
+      const url = '/pages/score/main'
+      const params = {
+        gid: this.question.gid
+      }
+      this.$router.push({ path: url, query: params })
     }
   },
 
@@ -118,12 +169,11 @@ export default {
   },
 
   async onLoad () {
-    await this.getList()
-    this.getAnswer()
-    const userinfo = wx.getStorageSync('userinfo')
-    if (userinfo) {
-      this.userinfo = userinfo
-    }
+    this.init()
+  },
+
+  onShow () {
+    this.init()
   }
 }
 </script>

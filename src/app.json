@@ -18,12 +18,7 @@
   },
   "tabBar": {
     "selectedColor": "#EA5149",
-    "list": [{
-        "pagePath": "pages/exam/main",
-        "text": "测试",
-        "iconPath": "static/img/book.png",
-        "selectedIconPath": "static/img/book-active.png"
-      },
+    "list": [
       {
         "pagePath": "pages/list/main",
         "text": "试题列表",

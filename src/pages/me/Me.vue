@@ -8,7 +8,6 @@
         <button v-if="!userinfo.openId" open-type="getUserInfo" class="weui-btn" type="warn">授权登录</button>
         <div v-if="userinfo.openId">
           <button class="weui-btn" type="primary" @click="gotoExam" >开始考试</button>
-          <button class="weui-btn" type="primary" >查看成绩</button>
           <div class="bottom">
             <button class="weui-btn" type="primary" @click="logout">退出登录</button>
           </div>
@@ -65,7 +64,7 @@ export default {
       }
     },
     gotoExam () {
-      const url = '/pages/exam/main'
+      const url = '/pages/list/main'
       wx.switchTab({
         url
       })
