@@ -3,7 +3,8 @@
       "pages/me/main",
       "pages/exam/main",
       "pages/score/main",
-      "pages/list/main"
+      "pages/list/main",
+      "pages/auth/main"
     ],
   "permission": {
     "scope.userLocation": {

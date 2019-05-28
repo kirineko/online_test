@@ -1,11 +1,22 @@
 <template>
     <div>
-      <div class="title">单项选择题</div>
-      <mp-radio 
-        v-model="choiced"
-        :options="question.options"
-        :title="question.num + '. ' + question.content"
-      />
+      <div v-if="question.type==='选择题'">
+        <div class="title">单项选择题</div>
+        <mp-radio 
+          v-model="choiced"
+          :options="question.options"
+          :title="question.num + '. ' + question.content"
+        />
+      </div>
+      <div v-if="question.type==='填空题'">
+        <div class="title">填空题</div>
+        <Blank
+          v-model="choiced"
+          :title="question.num + '. ' + question.content"
+        >
+        </Blank>
+      </div>
+      
       <div class="group-btn">
         <button class="mini-btn left" type="primary" @click="prepage()">上一题</button>
         <button class="mini-btn right" type="primary" @click="nextpage()">下一题</button>
@@ -22,11 +33,13 @@
 <script>
 import { get, post } from '@/util'
 import MpRadio from 'mp-weui/packages/radio'
+import Blank from '@/components/Blank'
 
 export default {
 
   components: {
-    MpRadio
+    MpRadio,
+    Blank
   },
 
   data () {

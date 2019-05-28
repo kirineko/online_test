@@ -2,7 +2,7 @@
   <div>
     <div v-if="userinfo.openId" class="container">
       <mp-cell-group title="试卷信息">
-        <mp-cell content="用户名称" :label="userinfo.nickName" isLink=false></mp-cell>
+        <mp-cell content="用户名称" :label="userinfo.username" isLink=false></mp-cell>
         <mp-cell content="试卷名称" :label="gname" isLink=false></mp-cell>
         <mp-cell content="交卷时间" :label="submit_time" isLink=false></mp-cell>
         <mp-cell content="总分" :label="total" isLink=false></mp-cell>
